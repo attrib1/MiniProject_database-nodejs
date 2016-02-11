@@ -1,0 +1,71 @@
+extends layout
+extends layout
+
+block content
+  h1= title
+  p Welcome to #{title}
+          a(class='btn btn-success',href='/admin') Home
+  
+  div(class='form')
+      form(action='/admin/edit' , method='post', enctype="multipart/form-data")
+         input(type="hidden",name="hidden_id", value=data[0].id_topic,required)   
+         p  Title : 
+             input(type="text",class="form-control",name='title',placeholder='title' value=data[0].title_topic,required)
+         p  description :
+              div 
+                textarea(class="form-control",required,name="desc", cols="40", rows="5" )=data[0].des_topic
+         p  category :
+              div 
+                select(class="form-control",name='category')
+                    
+                   each item in [ 'Technology', 'Education', 'World' ]
+                       if data[0].category_name == item
+                           option(value='#{item}',selected='true') #{item}
+                       else
+                           option(value='#{item}') #{item}
+                      
+         p  img : 
+             input(name='nimg1',type='file') 
+
+         input(class="btn btn-success",type='submit',value='Sumit',style='margin: 1%;') 
+         input(class="btn btn-primary",type='reset',value='reset')
+  
+
+  
+    div(ng-controller='showdatacontroller')
+        
+         div ค้นหา : 
+             input#seach-input(class="form-control",ng-model='sData',placeholder='ค้นหา',style='margin-bottom: 1%;')
+             select(class="form-control",ng-model="category")
+                option(value="") All
+                option(value='Technology') Technology 
+                option(value='Education') Education  
+                option(value='World') World  
+               
+         table(class="table table-hover")
+            thead
+             tr: th Posth
+                  tbody(ng-repeat="item in showData | filter:{'category_name':category}:filter2 | filter:{'title_topic':sData}")        
+                    tr    
+                    td(class="col-md-1") {{$index+1}}
+                    td(class="col-md-8")
+                             |{{item.title_topic | limitTo:'50'}}
+                    td(class="col-md-8") {{item.category_name}}
+                    td(class="col-md-1")
+                        a(class='btn',href='/admin/report/{{item.id_topic}}') 
+                            span(class='glyphicon glyphicon-save-file') report
+                    td(class="col-md-1")
+                        a(class='btn',href='/admin/edit/{{item.id_topic}}') 
+                            span(class='glyphicon glyphicon-pencil') edit
+                    td(class="col-md-1")
+                        a(class='btn',href='/admin/del/{{item.id_topic}}',role="button") 
+                             span(class='glyphicon glyphicon-trash')
+
+  //-- div(ng-app='Hello')
+    |{{ 'World' | sayhello }}
+    
+                     
+  script(type='text/javascript', src='/lib/angular/angular.min.js')
+  script(type='text/javascript', src='/application.js')
+  script(type='text/javascript',src='/javascripts/jquery/dist/jquery.min.js')
+  script(type='text/javascript',src='/stylesheets/js/bootstrap.min.js')

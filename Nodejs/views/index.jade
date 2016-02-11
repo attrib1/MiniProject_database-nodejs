@@ -1,0 +1,27 @@
+extends layout
+
+block content
+  h1= title
+  p Welcome to #{title}
+  
+  
+  div
+    form(action='/' , method='post')
+       p username: 
+          input(name='user_name',placeholder='username')
+       p password:  
+          input(name='user_pass',placeholder='password' type='password')
+        input(type='submit',value='Login')
+  
+  //-div 
+    table
+        thead
+            tr: th Posth
+              tbody
+                  each item in customers
+                      tr
+                        td: a(href='/customer/details/#{item.id}')= item.id
+                        td= item.user_name
+                        td= item.email
+
+
